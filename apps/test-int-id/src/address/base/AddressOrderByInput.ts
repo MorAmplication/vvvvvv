@@ -34,7 +34,7 @@ class AddressOrderByInput {
   @Field(() => SortOrder, {
     nullable: true,
   })
-  createdAt?: SortOrder;
+  created?: SortOrder;
 
   @ApiProperty({
     required: false,
@@ -43,7 +43,7 @@ class AddressOrderByInput {
   @Field(() => SortOrder, {
     nullable: true,
   })
-  updatedAt?: SortOrder;
+  updated?: SortOrder;
 
   @ApiProperty({
     required: false,

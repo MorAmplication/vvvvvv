@@ -46,8 +46,8 @@ model Customer {
 
 model Address {
   id        String     @id @default(cuid())
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  created   DateTime   @default(now())
+  updated   DateTime   @updatedAt
   address_1 String?
   address_2 String?
   city      String?
