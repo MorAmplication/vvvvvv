@@ -37,7 +37,7 @@ class Address {
   @IsDate()
   @Type(() => Date)
   @Field(() => Date)
-  createdAt!: Date;
+  created!: Date;
 
   @ApiProperty({
     required: true,
@@ -45,7 +45,7 @@ class Address {
   @IsDate()
   @Type(() => Date)
   @Field(() => Date)
-  updatedAt!: Date;
+  updated!: Date;
 
   @ApiProperty({
     required: false,
