@@ -26,12 +26,12 @@ export class ProductServiceBase {
     return this.prisma.product.count(args);
   }
 
-  async Products<T extends Prisma.ProductFindManyArgs>(
+  async products<T extends Prisma.ProductFindManyArgs>(
     args: Prisma.SelectSubset<T, Prisma.ProductFindManyArgs>
   ): Promise<Product[]> {
     return this.prisma.product.findMany(args);
   }
-  async Product<T extends Prisma.ProductFindUniqueArgs>(
+  async product<T extends Prisma.ProductFindUniqueArgs>(
     args: Prisma.SelectSubset<T, Prisma.ProductFindUniqueArgs>
   ): Promise<Product | null> {
     return this.prisma.product.findUnique(args);

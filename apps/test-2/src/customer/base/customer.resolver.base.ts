@@ -20,7 +20,9 @@ import * as common from "@nestjs/common";
 import { AclFilterResponseInterceptor } from "../../interceptors/aclFilterResponse.interceptor";
 import { AclValidateRequestInterceptor } from "../../interceptors/aclValidateRequest.interceptor";
 import { Customer } from "./Customer";
+import { CustomerCountArgs } from "./CustomerCountArgs";
 import { CustomerFindManyArgs } from "./CustomerFindManyArgs";
+import { CustomerFindUniqueArgs } from "./CustomerFindUniqueArgs";
 import { CreateCustomerArgs } from "./CreateCustomerArgs";
 import { UpdateCustomerArgs } from "./UpdateCustomerArgs";
 import { DeleteCustomerArgs } from "./DeleteCustomerArgs";
@@ -36,6 +38,21 @@ export class CustomerResolverBase {
     protected readonly rolesBuilder: nestAccessControl.RolesBuilder
   ) {}
 
+  @graphql.Query(() => MetaQueryPayload)
+  @nestAccessControl.UseRoles({
+    resource: "Customer",
+    action: "read",
+    possession: "any",
+  })
+  async _customersMeta(
+    @graphql.Args() args: CustomerCountArgs
+  ): Promise<MetaQueryPayload> {
+    const result = await this.service.count(args);
+    return {
+      count: result,
+    };
+  }
+
   @common.UseInterceptors(AclFilterResponseInterceptor)
   @graphql.Query(() => [Customer])
   @nestAccessControl.UseRoles({
@@ -43,10 +60,27 @@ export class CustomerResolverBase {
     action: "read",
     possession: "any",
   })
-  async Customers(
+  async customers(
     @graphql.Args() args: CustomerFindManyArgs
   ): Promise<Customer[]> {
-    return this.service.findMany(args);
+    return this.service.customers(args);
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @graphql.Query(() => Customer, { nullable: true })
+  @nestAccessControl.UseRoles({
+    resource: "Customer",
+    action: "read",
+    possession: "own",
+  })
+  async customer(
+    @graphql.Args() args: CustomerFindUniqueArgs
+  ): Promise<Customer | null> {
+    const result = await this.service.customer(args);
+    if (result === null) {
+      return null;
+    }
+    return result;
   }
 
   @common.UseInterceptors(AclValidateRequestInterceptor)
@@ -59,7 +93,7 @@ export class CustomerResolverBase {
   async createCustomer(
     @graphql.Args() args: CreateCustomerArgs
   ): Promise<Customer> {
-    return await this.service.create({
+    return await this.service.createCustomer({
       ...args,
       data: {
         ...args.data,
@@ -84,7 +118,7 @@ export class CustomerResolverBase {
     @graphql.Args() args: UpdateCustomerArgs
   ): Promise<Customer | null> {
     try {
-      return await this.service.update({
+      return await this.service.updateCustomer({
         ...args,
         data: {
           ...args.data,
@@ -116,7 +150,7 @@ export class CustomerResolverBase {
     @graphql.Args() args: DeleteCustomerArgs
   ): Promise<Customer | null> {
     try {
-      return await this.service.delete(args);
+      return await this.service.deleteCustomer(args);
     } catch (error) {
       if (isRecordNotFoundError(error)) {
         throw new GraphQLError(

@@ -51,7 +51,7 @@ export class AddressControllerBase {
   async createAddress(
     @common.Body() data: AddressCreateInput
   ): Promise<Address> {
-    return await this.service.create({
+    return await this.service.createAddress({
       data: data,
       select: {
         id: true,
@@ -78,9 +78,9 @@ export class AddressControllerBase {
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
-  async Addresses(@common.Req() request: Request): Promise<Address[]> {
+  async addresses(@common.Req() request: Request): Promise<Address[]> {
     const args = plainToClass(AddressFindManyArgs, request.query);
-    return this.service.findMany({
+    return this.service.addresses({
       ...args,
       select: {
         id: true,
@@ -107,10 +107,10 @@ export class AddressControllerBase {
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
-  async Address(
+  async address(
     @common.Param() params: AddressWhereUniqueInput
   ): Promise<Address | null> {
-    const result = await this.service.findOne({
+    const result = await this.service.address({
       where: params,
       select: {
         id: true,
@@ -148,7 +148,7 @@ export class AddressControllerBase {
     @common.Body() data: AddressUpdateInput
   ): Promise<Address | null> {
     try {
-      return await this.service.update({
+      return await this.service.updateAddress({
         where: params,
         data: data,
         select: {
@@ -187,7 +187,7 @@ export class AddressControllerBase {
     @common.Param() params: AddressWhereUniqueInput
   ): Promise<Address | null> {
     try {
-      return await this.service.delete({
+      return await this.service.deleteAddress({
         where: params,
         select: {
           id: true,
@@ -264,7 +264,7 @@ export class AddressControllerBase {
         connect: body,
       },
     };
-    await this.service.update({
+    await this.service.updateAddress({
       where: params,
       data,
       select: { id: true },
@@ -286,7 +286,7 @@ export class AddressControllerBase {
         set: body,
       },
     };
-    await this.service.update({
+    await this.service.updateAddress({
       where: params,
       data,
       select: { id: true },
@@ -308,7 +308,7 @@ export class AddressControllerBase {
         disconnect: body,
       },
     };
-    await this.service.update({
+    await this.service.updateAddress({
       where: params,
       data,
       select: { id: true },
