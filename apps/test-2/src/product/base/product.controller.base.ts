@@ -234,6 +234,8 @@ export class ProductControllerBase {
             id: true,
           },
         },
+
+        fld1: true,
       },
     });
     if (results === null) {
