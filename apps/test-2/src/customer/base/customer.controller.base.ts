@@ -51,7 +51,7 @@ export class CustomerControllerBase {
   async createCustomer(
     @common.Body() data: CustomerCreateInput
   ): Promise<Customer> {
-    return await this.service.create({
+    return await this.service.createCustomer({
       data: {
         ...data,
 
@@ -91,9 +91,9 @@ export class CustomerControllerBase {
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
-  async Customers(@common.Req() request: Request): Promise<Customer[]> {
+  async customers(@common.Req() request: Request): Promise<Customer[]> {
     const args = plainToClass(CustomerFindManyArgs, request.query);
-    return this.service.findMany({
+    return this.service.customers({
       ...args,
       select: {
         id: true,
@@ -113,6 +113,47 @@ export class CustomerControllerBase {
     });
   }
 
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @common.Get("/:id")
+  @swagger.ApiOkResponse({ type: Customer })
+  @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
+  @nestAccessControl.UseRoles({
+    resource: "Customer",
+    action: "read",
+    possession: "own",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
+  async customer(
+    @common.Param() params: CustomerWhereUniqueInput
+  ): Promise<Customer | null> {
+    const result = await this.service.customer({
+      where: params,
+      select: {
+        id: true,
+        createdAt: true,
+        updatedAt: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        phone: true,
+
+        address: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+    if (result === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return result;
+  }
+
   @common.UseInterceptors(AclValidateRequestInterceptor)
   @common.Patch("/:id")
   @swagger.ApiOkResponse({ type: Customer })
@@ -130,7 +171,7 @@ export class CustomerControllerBase {
     @common.Body() data: CustomerUpdateInput
   ): Promise<Customer | null> {
     try {
-      return await this.service.update({
+      return await this.service.updateCustomer({
         where: params,
         data: {
           ...data,
@@ -182,7 +223,7 @@ export class CustomerControllerBase {
     @common.Param() params: CustomerWhereUniqueInput
   ): Promise<Customer | null> {
     try {
-      return await this.service.delete({
+      return await this.service.deleteCustomer({
         where: params,
         select: {
           id: true,
@@ -269,7 +310,7 @@ export class CustomerControllerBase {
         connect: body,
       },
     };
-    await this.service.update({
+    await this.service.updateCustomer({
       where: params,
       data,
       select: { id: true },
@@ -291,7 +332,7 @@ export class CustomerControllerBase {
         set: body,
       },
     };
-    await this.service.update({
+    await this.service.updateCustomer({
       where: params,
       data,
       select: { id: true },
@@ -313,7 +354,7 @@ export class CustomerControllerBase {
         disconnect: body,
       },
     };
-    await this.service.update({
+    await this.service.updateCustomer({
       where: params,
       data,
       select: { id: true },

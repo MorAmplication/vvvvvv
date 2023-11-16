@@ -51,7 +51,7 @@ export class ProductControllerBase {
   async createProduct(
     @common.Body() data: ProductCreateInput
   ): Promise<Product> {
-    return await this.service.create({
+    return await this.service.createProduct({
       data: data,
       select: {
         id: true,
@@ -76,9 +76,9 @@ export class ProductControllerBase {
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
-  async Products(@common.Req() request: Request): Promise<Product[]> {
+  async products(@common.Req() request: Request): Promise<Product[]> {
     const args = plainToClass(ProductFindManyArgs, request.query);
-    return this.service.findMany({
+    return this.service.products({
       ...args,
       select: {
         id: true,
@@ -103,10 +103,10 @@ export class ProductControllerBase {
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
-  async Product(
+  async product(
     @common.Param() params: ProductWhereUniqueInput
   ): Promise<Product | null> {
-    const result = await this.service.findOne({
+    const result = await this.service.product({
       where: params,
       select: {
         id: true,
@@ -142,7 +142,7 @@ export class ProductControllerBase {
     @common.Body() data: ProductUpdateInput
   ): Promise<Product | null> {
     try {
-      return await this.service.update({
+      return await this.service.updateProduct({
         where: params,
         data: data,
         select: {
@@ -179,7 +179,7 @@ export class ProductControllerBase {
     @common.Param() params: ProductWhereUniqueInput
   ): Promise<Product | null> {
     try {
-      return await this.service.delete({
+      return await this.service.deleteProduct({
         where: params,
         select: {
           id: true,
@@ -259,7 +259,7 @@ export class ProductControllerBase {
         connect: body,
       },
     };
-    await this.service.update({
+    await this.service.updateProduct({
       where: params,
       data,
       select: { id: true },
@@ -281,7 +281,7 @@ export class ProductControllerBase {
         set: body,
       },
     };
-    await this.service.update({
+    await this.service.updateProduct({
       where: params,
       data,
       select: { id: true },
@@ -303,7 +303,7 @@ export class ProductControllerBase {
         disconnect: body,
       },
     };
-    await this.service.update({
+    await this.service.updateProduct({
       where: params,
       data,
       select: { id: true },

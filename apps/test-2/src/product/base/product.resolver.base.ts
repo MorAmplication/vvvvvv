@@ -43,7 +43,7 @@ export class ProductResolverBase {
     action: "read",
     possession: "any",
   })
-  async _ProductsMeta(
+  async _productsMeta(
     @graphql.Args() args: ProductCountArgs
   ): Promise<MetaQueryPayload> {
     const result = await this.service.count(args);
@@ -59,10 +59,10 @@ export class ProductResolverBase {
     action: "read",
     possession: "any",
   })
-  async Products(
+  async products(
     @graphql.Args() args: ProductFindManyArgs
   ): Promise<Product[]> {
-    return this.service.findMany(args);
+    return this.service.products(args);
   }
 
   @common.UseInterceptors(AclFilterResponseInterceptor)
@@ -72,10 +72,10 @@ export class ProductResolverBase {
     action: "read",
     possession: "own",
   })
-  async Product(
+  async product(
     @graphql.Args() args: ProductFindUniqueArgs
   ): Promise<Product | null> {
-    const result = await this.service.findOne(args);
+    const result = await this.service.product(args);
     if (result === null) {
       return null;
     }
@@ -92,7 +92,7 @@ export class ProductResolverBase {
   async createProduct(
     @graphql.Args() args: CreateProductArgs
   ): Promise<Product> {
-    return await this.service.create({
+    return await this.service.createProduct({
       ...args,
       data: args.data,
     });
@@ -109,7 +109,7 @@ export class ProductResolverBase {
     @graphql.Args() args: UpdateProductArgs
   ): Promise<Product | null> {
     try {
-      return await this.service.update({
+      return await this.service.updateProduct({
         ...args,
         data: args.data,
       });
@@ -133,7 +133,7 @@ export class ProductResolverBase {
     @graphql.Args() args: DeleteProductArgs
   ): Promise<Product | null> {
     try {
-      return await this.service.delete(args);
+      return await this.service.deleteProduct(args);
     } catch (error) {
       if (isRecordNotFoundError(error)) {
         throw new GraphQLError(
