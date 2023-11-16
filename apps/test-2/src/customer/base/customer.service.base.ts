@@ -27,10 +27,15 @@ export class CustomerServiceBase {
     return this.prisma.customer.count(args);
   }
 
-  async Customers<T extends Prisma.CustomerFindManyArgs>(
+  async customers<T extends Prisma.CustomerFindManyArgs>(
     args: Prisma.SelectSubset<T, Prisma.CustomerFindManyArgs>
   ): Promise<Customer[]> {
     return this.prisma.customer.findMany(args);
+  }
+  async customer<T extends Prisma.CustomerFindUniqueArgs>(
+    args: Prisma.SelectSubset<T, Prisma.CustomerFindUniqueArgs>
+  ): Promise<Customer | null> {
+    return this.prisma.customer.findUnique(args);
   }
   async createCustomer<T extends Prisma.CustomerCreateArgs>(
     args: Prisma.SelectSubset<T, Prisma.CustomerCreateArgs>

@@ -26,12 +26,12 @@ export class AddressServiceBase {
     return this.prisma.address.count(args);
   }
 
-  async Addresses<T extends Prisma.AddressFindManyArgs>(
+  async addresses<T extends Prisma.AddressFindManyArgs>(
     args: Prisma.SelectSubset<T, Prisma.AddressFindManyArgs>
   ): Promise<Address[]> {
     return this.prisma.address.findMany(args);
   }
-  async Address<T extends Prisma.AddressFindUniqueArgs>(
+  async address<T extends Prisma.AddressFindUniqueArgs>(
     args: Prisma.SelectSubset<T, Prisma.AddressFindUniqueArgs>
   ): Promise<Address | null> {
     return this.prisma.address.findUnique(args);

@@ -43,7 +43,7 @@ export class AddressResolverBase {
     action: "read",
     possession: "any",
   })
-  async _AddressesMeta(
+  async _addressesMeta(
     @graphql.Args() args: AddressCountArgs
   ): Promise<MetaQueryPayload> {
     const result = await this.service.count(args);
@@ -59,10 +59,10 @@ export class AddressResolverBase {
     action: "read",
     possession: "any",
   })
-  async Addresses(
+  async addresses(
     @graphql.Args() args: AddressFindManyArgs
   ): Promise<Address[]> {
-    return this.service.findMany(args);
+    return this.service.addresses(args);
   }
 
   @common.UseInterceptors(AclFilterResponseInterceptor)
@@ -72,10 +72,10 @@ export class AddressResolverBase {
     action: "read",
     possession: "own",
   })
-  async Address(
+  async address(
     @graphql.Args() args: AddressFindUniqueArgs
   ): Promise<Address | null> {
-    const result = await this.service.findOne(args);
+    const result = await this.service.address(args);
     if (result === null) {
       return null;
     }
@@ -92,7 +92,7 @@ export class AddressResolverBase {
   async createAddress(
     @graphql.Args() args: CreateAddressArgs
   ): Promise<Address> {
-    return await this.service.create({
+    return await this.service.createAddress({
       ...args,
       data: args.data,
     });
@@ -109,7 +109,7 @@ export class AddressResolverBase {
     @graphql.Args() args: UpdateAddressArgs
   ): Promise<Address | null> {
     try {
-      return await this.service.update({
+      return await this.service.updateAddress({
         ...args,
         data: args.data,
       });
@@ -133,7 +133,7 @@ export class AddressResolverBase {
     @graphql.Args() args: DeleteAddressArgs
   ): Promise<Address | null> {
     try {
-      return await this.service.delete(args);
+      return await this.service.deleteAddress(args);
     } catch (error) {
       if (isRecordNotFoundError(error)) {
         throw new GraphQLError(
