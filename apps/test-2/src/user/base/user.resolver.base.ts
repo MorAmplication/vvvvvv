@@ -41,7 +41,7 @@ export class UserResolverBase {
     action: "read",
     possession: "any",
   })
-  async _UsersMeta(
+  async _usersMeta(
     @graphql.Args() args: UserCountArgs
   ): Promise<MetaQueryPayload> {
     const result = await this.service.count(args);
@@ -57,8 +57,8 @@ export class UserResolverBase {
     action: "read",
     possession: "any",
   })
-  async Users(@graphql.Args() args: UserFindManyArgs): Promise<User[]> {
-    return this.service.findMany(args);
+  async users(@graphql.Args() args: UserFindManyArgs): Promise<User[]> {
+    return this.service.users(args);
   }
 
   @common.UseInterceptors(AclFilterResponseInterceptor)
@@ -68,8 +68,8 @@ export class UserResolverBase {
     action: "read",
     possession: "own",
   })
-  async User(@graphql.Args() args: UserFindUniqueArgs): Promise<User | null> {
-    const result = await this.service.findOne(args);
+  async user(@graphql.Args() args: UserFindUniqueArgs): Promise<User | null> {
+    const result = await this.service.user(args);
     if (result === null) {
       return null;
     }
@@ -84,7 +84,7 @@ export class UserResolverBase {
     possession: "any",
   })
   async createUser(@graphql.Args() args: CreateUserArgs): Promise<User> {
-    return await this.service.create({
+    return await this.service.createUser({
       ...args,
       data: args.data,
     });
@@ -99,7 +99,7 @@ export class UserResolverBase {
   })
   async updateUser(@graphql.Args() args: UpdateUserArgs): Promise<User | null> {
     try {
-      return await this.service.update({
+      return await this.service.updateUser({
         ...args,
         data: args.data,
       });
@@ -121,7 +121,7 @@ export class UserResolverBase {
   })
   async deleteUser(@graphql.Args() args: DeleteUserArgs): Promise<User | null> {
     try {
-      return await this.service.delete(args);
+      return await this.service.deleteUser(args);
     } catch (error) {
       if (isRecordNotFoundError(error)) {
         throw new GraphQLError(

@@ -46,7 +46,7 @@ export class UserControllerBase {
     type: errors.ForbiddenException,
   })
   async createUser(@common.Body() data: UserCreateInput): Promise<User> {
-    return await this.service.create({
+    return await this.service.createUser({
       data: data,
       select: {
         id: true,
@@ -72,9 +72,9 @@ export class UserControllerBase {
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
-  async Users(@common.Req() request: Request): Promise<User[]> {
+  async users(@common.Req() request: Request): Promise<User[]> {
     const args = plainToClass(UserFindManyArgs, request.query);
-    return this.service.findMany({
+    return this.service.users({
       ...args,
       select: {
         id: true,
@@ -100,10 +100,10 @@ export class UserControllerBase {
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
-  async User(
+  async user(
     @common.Param() params: UserWhereUniqueInput
   ): Promise<User | null> {
-    const result = await this.service.findOne({
+    const result = await this.service.user({
       where: params,
       select: {
         id: true,
@@ -140,7 +140,7 @@ export class UserControllerBase {
     @common.Body() data: UserUpdateInput
   ): Promise<User | null> {
     try {
-      return await this.service.update({
+      return await this.service.updateUser({
         where: params,
         data: data,
         select: {
@@ -178,7 +178,7 @@ export class UserControllerBase {
     @common.Param() params: UserWhereUniqueInput
   ): Promise<User | null> {
     try {
-      return await this.service.delete({
+      return await this.service.deleteUser({
         where: params,
         select: {
           id: true,
