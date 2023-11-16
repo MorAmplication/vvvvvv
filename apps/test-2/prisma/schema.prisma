@@ -29,6 +29,7 @@ model Order {
   customerId String?
   product    Product?  @relation(fields: [productId], references: [id])
   productId  String?
+  fld1       String?
 }
 
 model Customer {

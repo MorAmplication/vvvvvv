@@ -81,6 +81,8 @@ export class OrderControllerBase {
             id: true,
           },
         },
+
+        fld1: true,
       },
     });
   }
@@ -120,6 +122,8 @@ export class OrderControllerBase {
             id: true,
           },
         },
+
+        fld1: true,
       },
     });
   }
@@ -160,6 +164,8 @@ export class OrderControllerBase {
             id: true,
           },
         },
+
+        fld1: true,
       },
     });
     if (result === null) {
@@ -223,6 +229,8 @@ export class OrderControllerBase {
               id: true,
             },
           },
+
+          fld1: true,
         },
       });
     } catch (error) {
@@ -271,6 +279,8 @@ export class OrderControllerBase {
               id: true,
             },
           },
+
+          fld1: true,
         },
       });
     } catch (error) {
