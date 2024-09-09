@@ -6,3 +6,30 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
+
+model User {
+  createdAt DateTime @default(now())
+  email     String?  @unique
+  firstName String?
+  id        String   @id @default(cuid())
+  lastName  String?
+  password  String
+  roles     Json
+  updatedAt DateTime @updatedAt
+  username  String   @unique
+}
+
+model Mor {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+  vikas     Vika[]
+}
+
+model Vika {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  mor       Mor?     @relation(fields: [morId], references: [id])
+  morId     String?
+  updatedAt DateTime @updatedAt
+}
