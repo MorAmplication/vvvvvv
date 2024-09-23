@@ -15,6 +15,10 @@ import { MorList } from "./mor/MorList";
 import { MorCreate } from "./mor/MorCreate";
 import { MorEdit } from "./mor/MorEdit";
 import { MorShow } from "./mor/MorShow";
+import { VikaList } from "./vika/VikaList";
+import { VikaCreate } from "./vika/VikaCreate";
+import { VikaEdit } from "./vika/VikaEdit";
+import { VikaShow } from "./vika/VikaShow";
 import { auth0AuthProvider } from "./auth-provider/ra-auth-auth0";
 
 const history = createHistory();
@@ -58,6 +62,13 @@ const App = (): React.ReactElement => {
             edit={MorEdit}
             create={MorCreate}
             show={MorShow}
+          />
+          <Resource
+            name="Vika"
+            list={VikaList}
+            edit={VikaEdit}
+            create={VikaCreate}
+            show={VikaShow}
           />
         </Admin>
       </BrowserRouter>
